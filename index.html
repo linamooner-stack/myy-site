@@ -2,25 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ff4fa3" />
+  <meta name="description" content="Alina S — Communication Designer. Visual systems, branding and typography." />
   <title>Alina S — Communication Designer</title>
 
   <style>
+    :root {
+      --pink: #ff4fa3;
+      --hot-pink: #ff0a8a;
+      --baby-pink: #f7b9d8;
+      --cyan: #7be8f2;
+      --violet: #8b5cf6;
+      --ink: #170b18;
+      --paper: #fff7f9;
+      --white: #fffdfd;
+      --black: #09090b;
+      --line: rgba(255, 255, 255, 0.25);
+      --shadow: 0 24px 70px rgba(62, 0, 37, 0.28);
+      --radius: 22px;
+      --pad: clamp(18px, 3vw, 44px);
+    }
+
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     html {
       scroll-behavior: smooth;
+      background: var(--ink);
     }
 
     body {
-      background: #111111;
-      color: #e7e4dd;
-      font-family: Arial, Helvetica, sans-serif;
+      width: 100%;
+      min-width: 0;
+      min-height: 100vh;
       overflow-x: hidden;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 37, 153, 0.26), transparent 25%),
+        radial-gradient(circle at 85% 10%, rgba(123, 232, 242, 0.17), transparent 22%),
+        radial-gradient(circle at 75% 70%, rgba(139, 92, 246, 0.25), transparent 30%),
+        linear-gradient(135deg, #120713 0%, #210a1d 46%, #140a19 100%);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      opacity: 0.12;
+      pointer-events: none;
+      background-image:
+        repeating-radial-gradient(circle at 0 0, rgba(255,255,255,.38) 0 1px, transparent 1px 4px),
+        linear-gradient(rgba(255,255,255,.025), rgba(255,255,255,.025));
+      mix-blend-mode: soft-light;
     }
 
     a {
@@ -28,415 +69,1081 @@
       text-decoration: none;
     }
 
-    .noise {
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .hero-grid > *,
+    .about-layout > *,
+    .works-grid > *,
+    .work-card,
+    .hero-title,
+    .hero-note,
+    .about-copy,
+    .contact-title {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .page,
+    main,
+    section {
+      width: 100%;
+      min-width: 0;
+      max-width: 100vw;
+    }
+
+    .page {
+      position: relative;
+      isolation: isolate;
+      overflow-x: clip;
+    }
+
+    .orb {
       position: fixed;
-      inset: 0;
+      width: 36vw;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.19;
+      z-index: -2;
       pointer-events: none;
-      z-index: 999;
-      opacity: 0.04;
-      background-image: radial-gradient(#ffffff 1px, transparent 1px);
-      background-size: 4px 4px;
+      animation: float-orb 13s ease-in-out infinite alternate;
+    }
+
+    .orb.one {
+      background: var(--hot-pink);
+      left: -12vw;
+      top: 20vh;
+    }
+
+    .orb.two {
+      background: var(--cyan);
+      right: -18vw;
+      top: 35vh;
+      animation-delay: -4s;
     }
 
     .cursor {
       position: fixed;
+      z-index: 1000;
       width: 18px;
       height: 18px;
-      border: 1px solid #e7e4dd;
+      border: 1px solid rgba(255,255,255,.85);
       border-radius: 50%;
-      pointer-events: none;
-      z-index: 1000;
       transform: translate(-50%, -50%);
-      transition: 0.2s;
+      pointer-events: none;
       mix-blend-mode: difference;
+      transition: width .2s ease, height .2s ease, background .2s ease;
     }
 
-    .cursor.active {
-      width: 70px;
-      height: 70px;
-      background: #e7e4dd;
+    .cursor.is-active {
+      width: 74px;
+      height: 74px;
+      background: #fff;
     }
 
-    header {
+    .site-header {
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
-      padding: 24px 32px;
+      z-index: 50;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-start;
-      z-index: 10;
-      font-size: 14px;
-      letter-spacing: 0.04em;
-      mix-blend-mode: difference;
+      gap: 20px;
+      padding: 18px var(--pad);
+      background: linear-gradient(to bottom, rgba(16,5,16,.83), rgba(16,5,16,.25), transparent);
+      backdrop-filter: blur(14px);
     }
 
-    nav {
+    .brand {
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      font-size: clamp(18px, 2vw, 30px);
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav {
       display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      align-items: center;
+      gap: clamp(12px, 2vw, 28px);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .nav a {
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 2px;
+      background: var(--pink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .25s ease;
+    }
+
+    .nav a:hover::after {
+      transform: scaleX(1);
     }
 
     section {
-      min-height: 100vh;
-      padding: 120px 32px 60px;
       position: relative;
+      padding: 110px var(--pad) 80px;
     }
 
     .hero {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-
-    .hero h1 {
-      font-size: clamp(54px, 13vw, 210px);
-      line-height: 0.85;
-      letter-spacing: -0.08em;
-      text-transform: uppercase;
-      max-width: 1300px;
-      word-break: break-word;
-    }
-
-    .hero span {
-      display: block;
-      transform: translateY(120px);
-      opacity: 0;
-      animation: reveal 1s forwards cubic-bezier(.16,1,.3,1);
-    }
-
-    .hero span:nth-child(2) {
-      animation-delay: 0.18s;
-    }
-
-    .blue {
-      color: #6e7c93;
-    }
-
-    .info {
-      margin-top: 40px;
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      font-size: 18px;
-      max-width: 900px;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: fadeUp 1s forwards cubic-bezier(.16,1,.3,1);
-      animation-delay: 0.8s;
-    }
-
-    .bg-word {
-      position: fixed;
-      right: -10vw;
-      bottom: -8vw;
-      font-size: 22vw;
-      font-weight: 900;
-      letter-spacing: -0.08em;
-      color: rgba(255,255,255,0.025);
-      pointer-events: none;
-      z-index: -1;
-      animation: float 8s ease-in-out infinite alternate;
-    }
-
-    .section-title {
-      font-size: 14px;
-      color: #6e7c93;
-      margin-bottom: 40px;
-    }
-
-    .works {
+      min-height: 100svh;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      align-items: end;
+      padding-top: 130px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(280px, .75fr);
+      gap: clamp(24px, 5vw, 86px);
+      align-items: end;
+    }
+
+    .hero-title {
+      font-size: clamp(78px, 14.2vw, 235px);
+      line-height: .75;
+      letter-spacing: -0.095em;
+      text-transform: uppercase;
+      max-width: 11ch;
+      text-shadow: 0 14px 35px rgba(0,0,0,.25);
+    }
+
+    .hero-title .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-title .word {
+      display: block;
+      transform: translateY(115%);
+      animation: rise 1s cubic-bezier(.18,.85,.25,1) forwards;
+    }
+
+    .hero-title .line:nth-child(2) .word {
+      animation-delay: .13s;
+      color: var(--pink);
+      text-shadow: 4px 4px 0 var(--cyan);
+    }
+
+    .hero-title .line:nth-child(3) .word {
+      animation-delay: .26s;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 18px;
+      align-self: center;
+      padding-bottom: 4vh;
+    }
+
+    .star-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--cyan);
+      font-size: clamp(28px, 4vw, 58px);
+      animation: blink 2.3s steps(2, end) infinite;
+    }
+
+    .hero-note {
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.06);
+      box-shadow: var(--shadow);
+      transform: rotate(1.2deg);
+    }
+
+    .hero-note strong {
+      display: block;
+      font-size: clamp(24px, 3vw, 46px);
+      line-height: .95;
+      text-transform: uppercase;
+      letter-spacing: -0.055em;
+      margin-bottom: 14px;
+    }
+
+    .hero-note p {
+      color: rgba(255,255,255,.82);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .marquee {
+      margin-top: 50px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      transform: rotate(-1deg) scale(1.02);
+      background: rgba(255, 79, 163, .88);
+      color: var(--ink);
+    }
+
+    .marquee-track {
+      width: max-content;
+      display: flex;
+      gap: 32px;
+      padding: 12px 0;
+      font-size: clamp(20px, 3vw, 38px);
+      font-weight: 900;
+      text-transform: uppercase;
+      animation: marquee 20s linear infinite;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .section-label::before {
+      content: "✦";
+      color: var(--pink);
+      font-size: 18px;
+    }
+
+    .section-heading {
+      max-width: 12ch;
+      font-size: clamp(54px, 9vw, 148px);
+      line-height: .82;
+      letter-spacing: -0.075em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    .section-heading span {
+      color: var(--pink);
+      text-shadow: 3px 3px 0 rgba(123, 232, 242, .6);
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(14px, 2vw, 26px);
     }
 
     .work-card {
-      min-height: 420px;
-      background: #1b1b1b;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid #2a2a2a;
-      transition: 0.35s ease;
-      overflow: hidden;
       position: relative;
+      min-height: 390px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.3);
+      box-shadow: var(--shadow);
+      background: var(--paper);
+      color: var(--ink);
+      transition: transform .35s ease, box-shadow .35s ease;
     }
 
     .work-card:hover {
-      background: #6e7c93;
-      color: #111111;
-      transform: translateY(-8px) scale(1.01);
+      transform: translateY(-10px) rotate(0deg) !important;
+      box-shadow: 0 30px 90px rgba(255, 10, 138, .28);
     }
 
-    .work-card h2 {
-      font-size: clamp(42px, 7vw, 120px);
-      line-height: 0.9;
-      letter-spacing: -0.06em;
+    .work-card:nth-child(1) {
+      grid-column: span 7;
+      transform: rotate(-1deg);
+    }
+
+    .work-card:nth-child(2) {
+      grid-column: span 5;
+      transform: rotate(1.1deg);
+      background: var(--pink);
+    }
+
+    .work-card:nth-child(3) {
+      grid-column: span 4;
+      transform: rotate(.8deg);
+      background: var(--cyan);
+    }
+
+    .work-card:nth-child(4) {
+      grid-column: span 8;
+      transform: rotate(-.8deg);
+      background: #1a111b;
+      color: var(--white);
+    }
+
+    .work-card:nth-child(5) {
+      grid-column: span 5;
+      transform: rotate(.8deg);
+      background: var(--baby-pink);
+    }
+
+    .work-card:nth-child(6) {
+      grid-column: span 7;
+      transform: rotate(-.6deg);
+      background: linear-gradient(135deg, var(--cyan), var(--pink));
+    }
+
+    .work-visual {
+      min-height: 300px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,.7), transparent 20%),
+        linear-gradient(135deg, transparent 0 48%, rgba(0,0,0,.08) 48% 52%, transparent 52%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 4px);
+    }
+
+    .work-card:nth-child(1) .work-visual {
+      background:
+        linear-gradient(135deg, rgba(139,92,246,.2), transparent 50%),
+        #131014;
+      color: #fff;
+    }
+
+    .work-card:nth-child(4) .work-visual {
+      background:
+        radial-gradient(circle at 70% 30%, rgba(255,79,163,.4), transparent 24%),
+        repeating-radial-gradient(circle at 0 0, rgba(255,255,255,.16) 0 1px, transparent 1px 5px),
+        #130d16;
+    }
+
+    .work-kicker {
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .work-title {
+      font-size: clamp(52px, 8vw, 130px);
+      line-height: .78;
+      letter-spacing: -0.075em;
       text-transform: uppercase;
       word-break: break-word;
     }
 
-    .about {
-      max-width: 1000px;
-      font-size: clamp(36px, 6vw, 96px);
-      line-height: 1;
+    .work-title.script {
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      text-transform: none;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: .9;
+    }
+
+    .work-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 22px;
+      border-top: 1px solid rgba(0,0,0,.15);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr);
+      gap: clamp(30px, 6vw, 100px);
+      align-items: start;
+    }
+
+    .about-copy {
+      font-size: clamp(38px, 6vw, 92px);
+      line-height: .98;
       letter-spacing: -0.06em;
     }
 
+    .about-copy em {
+      color: var(--cyan);
+      font-style: normal;
+    }
+
+    .about-card {
+      position: sticky;
+      top: 110px;
+      padding: 28px;
+      color: var(--ink);
+      background: var(--baby-pink);
+      box-shadow: var(--shadow);
+      transform: rotate(1.4deg);
+    }
+
+    .about-card h3 {
+      font-size: clamp(34px, 4vw, 64px);
+      line-height: .9;
+      letter-spacing: -0.06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .about-card ul {
+      list-style: none;
+      display: grid;
+      gap: 13px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .about-card li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .about-card li::before {
+      content: "★";
+      color: var(--hot-pink);
+    }
+
+    .availability {
+      min-height: 85svh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .availability h2 {
+      position: relative;
+      max-width: 9ch;
+      font-size: clamp(72px, 14vw, 220px);
+      line-height: .75;
+      letter-spacing: -0.095em;
+      text-transform: uppercase;
+      color: var(--pink);
+      text-shadow:
+        5px 5px 0 var(--cyan),
+        10px 10px 0 rgba(139,92,246,.45);
+    }
+
+    .availability h2::before,
+    .availability h2::after {
+      content: "★";
+      position: absolute;
+      color: var(--white);
+      font-size: .36em;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    .availability h2::before {
+      left: -10%;
+      top: -12%;
+    }
+
+    .availability h2::after {
+      right: -8%;
+      bottom: -8%;
+      animation-delay: -.7s;
+    }
+
     .contact {
+      min-height: 90svh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
     }
 
-    .contact h2 {
-      font-size: clamp(64px, 12vw, 180px);
-      line-height: 0.9;
-      letter-spacing: -0.07em;
+    .contact-title {
+      font-size: clamp(68px, 12vw, 196px);
+      line-height: .78;
+      letter-spacing: -0.085em;
       text-transform: uppercase;
-      word-break: break-word;
+      max-width: 8ch;
+    }
+
+    .contact-title span {
+      color: var(--cyan);
     }
 
     .contact-links {
-      margin-top: 40px;
+      margin-top: 44px;
       display: flex;
-      gap: 30px;
-      font-size: 20px;
       flex-wrap: wrap;
+      gap: 14px;
     }
 
-    .contact-links a:hover,
-    nav a:hover {
-      color: #6e7c93;
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 0 24px;
+      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.07);
+      font-size: clamp(15px, 2vw, 21px);
+      font-weight: 900;
+      text-transform: uppercase;
+      transition: transform .25s ease, background .25s ease, color .25s ease;
+    }
+
+    .contact-link:hover {
+      transform: translateY(-5px) rotate(-1deg);
+      background: var(--pink);
+      color: var(--ink);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px var(--pad) 38px;
+      color: rgba(255,255,255,.58);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
     }
 
     .reveal {
-      opacity: 0;
-      transform: translateY(70px);
-      transition: 0.9s cubic-bezier(.16,1,.3,1);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity .75s ease, transform .85s cubic-bezier(.18,.8,.2,1);
     }
 
-    .reveal.visible {
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .js .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    @keyframes reveal {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    @keyframes rise {
+      to { transform: translateY(0); }
     }
 
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
     }
 
-    @keyframes float {
-      to {
-        transform: translateY(-35px);
-      }
+    @keyframes float-orb {
+      to { transform: translate(8vw, 6vh) scale(1.15); }
     }
 
-    @media (max-width: 768px) {
+    @keyframes blink {
+      50% { opacity: .35; }
+    }
+
+    @keyframes pulse {
+      50% { transform: scale(1.25) rotate(16deg); }
+    }
+
+    @media (max-width: 1100px), (pointer: coarse) {
       .cursor {
         display: none;
       }
 
-      header {
-        padding: 20px;
-        font-size: 12px;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
-        mix-blend-mode: normal;
-        background: rgba(17,17,17,0.7);
-        backdrop-filter: blur(12px);
+      .site-header {
+        width: 100vw;
+        max-width: 100vw;
+        align-items: flex-start;
+        padding:
+          max(16px, env(safe-area-inset-top))
+          max(16px, env(safe-area-inset-right))
+          16px
+          max(16px, env(safe-area-inset-left));
+        background: rgba(18, 7, 19, .9);
       }
 
-      nav {
-        justify-content: flex-start;
-        gap: 16px;
+      .brand {
+        flex: 0 0 auto;
+        font-size: 18px;
+      }
+
+      .nav {
+        justify-content: flex-end;
+        gap: 10px;
+        font-size: 9px;
+        line-height: 1.2;
+      }
+
+      .nav a:nth-child(2) {
+        display: none;
       }
 
       section {
-        min-height: auto;
-        padding: 130px 20px 70px;
+        width: 100%;
+        max-width: 100vw;
+        overflow: hidden;
+        padding:
+          94px
+          max(16px, env(safe-area-inset-right))
+          64px
+          max(16px, env(safe-area-inset-left));
       }
 
       .hero {
+        width: 100%;
         min-height: 100svh;
+        padding-top: 118px;
       }
 
-      .hero h1 {
-        font-size: clamp(48px, 17vw, 86px);
-        line-height: 0.88;
-        letter-spacing: -0.07em;
+      .hero-grid,
+      .about-layout {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
       }
 
-      .info {
-        flex-direction: column;
-        font-size: 15px;
-        gap: 10px;
+      .hero-title {
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(42px, 12.2vw, 72px);
+        line-height: .82;
+        letter-spacing: -.075em;
+        overflow-wrap: anywhere;
+        word-break: normal;
       }
 
-      .works {
-        grid-template-columns: 1fr;
+      .hero-title .word {
+        transform: none !important;
+        animation: none !important;
+        opacity: 1 !important;
       }
 
-      .work-card {
-        min-height: 300px;
-        padding: 22px;
+      .reveal,
+      .js .reveal {
+        opacity: 1 !important;
+        transform: none !important;
       }
 
-      .work-card:hover {
+      .hero-title .line {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .hero-title .word {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .hero-side {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0;
+        padding-bottom: 0;
+      }
+
+      .hero-note {
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        overflow: hidden;
+      }
+
+      .hero-note strong,
+      .hero-note p {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+
+      .ticker {
+        width: calc(100% + 32px);
+        max-width: none;
+        margin-left: -16px;
+        margin-top: 34px;
         transform: none;
       }
 
-      .work-card h2 {
-        font-size: clamp(46px, 18vw, 82px);
+      .section-heading {
+        max-width: 100%;
+        font-size: clamp(48px, 14vw, 86px);
+        overflow-wrap: anywhere;
       }
 
-      .about {
-        font-size: clamp(38px, 12vw, 68px);
-        line-height: 0.95;
+      .works-grid {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
       }
 
-      .contact h2 {
-        font-size: clamp(58px, 17vw, 92px);
+      .work-card:nth-child(n) {
+        width: 100%;
+        max-width: 100%;
+        grid-column: auto;
+        min-height: 330px;
+        transform: none;
+      }
+
+      .work-card:hover {
+        transform: none !important;
+      }
+
+      .work-visual {
+        width: 100%;
+        min-height: 255px;
+      }
+
+      .work-title {
+        max-width: 100%;
+        font-size: clamp(48px, 15vw, 82px);
+        overflow-wrap: anywhere;
+      }
+
+      .work-meta {
+        flex-wrap: wrap;
+        overflow-wrap: anywhere;
+      }
+
+      .about-copy {
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(36px, 10vw, 60px);
+        overflow-wrap: anywhere;
+      }
+
+      .about-card {
+        position: relative;
+        top: auto;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+      }
+
+      .availability {
+        min-height: 72svh;
+      }
+
+      .availability h2 {
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(58px, 17vw, 104px);
+        overflow-wrap: anywhere;
+      }
+
+      .contact {
+        min-height: 78svh;
+      }
+
+      .contact-title {
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(54px, 16vw, 98px);
+        overflow-wrap: anywhere;
       }
 
       .contact-links {
+        width: 100%;
         flex-direction: column;
-        font-size: 18px;
-        gap: 14px;
       }
 
-      .bg-word {
-        font-size: 45vw;
-        right: -35vw;
-        bottom: 5vh;
+      .contact-link {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding-inline: 16px;
+        overflow-wrap: anywhere;
+        text-align: center;
+      }
+
+      footer {
+        width: 100%;
+        max-width: 100vw;
+        flex-direction: column;
+        padding-inline: max(16px, env(safe-area-inset-left));
+      }
+    }
+
+    @media (max-width: 430px) {
+      .site-header {
+        gap: 8px;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+
+      .nav {
+        gap: 8px;
+        font-size: 8px;
+      }
+
+      .hero-title {
+        font-size: clamp(38px, 11.8vw, 54px);
+      }
+
+      .hero-note strong {
+        font-size: 25px;
+      }
+
+      .section-heading {
+        font-size: clamp(44px, 13vw, 66px);
+      }
+
+      .work-title {
+        font-size: clamp(44px, 14vw, 66px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+
+      .hero-title .word {
+        transform: none;
       }
     }
   </style>
 </head>
 
 <body>
+  <script>document.documentElement.classList.add("js");</script>
+  <div class="page">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="cursor" aria-hidden="true"></div>
 
-  <div class="noise"></div>
-  <div class="cursor"></div>
-  <div class="bg-word">SPACE</div>
+    <header class="site-header">
+      <a class="brand" href="#top">ALINA <span>S</span></a>
 
-  <header>
-    <a href="#">ALINA S</a>
-    <nav>
-      <a href="#work">WORK</a>
-      <a href="#about">ABOUT</a>
-      <a href="#contact">CONTACT</a>
-      <a href="https://www.behance.net/linadesiart" target="_blank">BEHANCE ↗</a>
-    </nav>
-  </header>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="https://www.behance.net/linadesiart" target="_blank" rel="noopener noreferrer">Behance ↗</a>
+      </nav>
+    </header>
 
-  <section class="hero">
-    <h1>
-      <span>Communication</span>
-      <span class="blue">Designer</span>
-    </h1>
+    <main id="top">
+      <section class="hero">
+        <div class="hero-grid">
+          <h1 class="hero-title" aria-label="Alina S Communication Designer">
+            <span class="line"><span class="word">Alina S</span></span>
+            <span class="line"><span class="word">Communication</span></span>
+            <span class="line"><span class="word">Designer</span></span>
+          </h1>
 
-    <div class="info">
-      <p>Based in Kazakhstan</p>
-      <p>Visual systems / Branding / Typography</p>
-    </div>
-  </section>
+          <aside class="hero-side">
+            <div class="star-row" aria-hidden="true">★ ✦ ★</div>
 
-  <section id="work">
-    <p class="section-title reveal">01 / SELECTED WORKS</p>
+            <div class="hero-note">
+              <strong>Visual systems with personality.</strong>
+              <p>
+                Branding, typography and communication design from Kazakhstan.
+                Bold ideas, expressive layouts and clear messages.
+              </p>
+            </div>
+          </aside>
+        </div>
 
-    <div class="works">
-      <a class="work-card reveal" href="https://www.behance.net/linadesiart" target="_blank">
-        <p>Experimental Typography Project</p>
-        <h2>TYPE/<br>SPACE</h2>
-        <p>2026</p>
-      </a>
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee-track">
+            <span>Typography ★ Branding ★ Posters ★ Visual Systems ★</span>
+            <span>Typography ★ Branding ★ Posters ★ Visual Systems ★</span>
+          </div>
+        </div>
+      </section>
 
-      <div class="work-card reveal">
-        <p>Editorial Design</p>
-        <h2>ZINE</h2>
-        <p>2026</p>
-      </div>
+      <section id="work">
+        <p class="section-label reveal">01 / Behance projects</p>
 
-      <div class="work-card reveal">
-        <p>Poster Series</p>
-        <h2>POSTERS</h2>
-        <p>2026</p>
-      </div>
+        <div class="works-grid">
+          <a class="work-card reveal" href="https://www.behance.net/gallery/222934489/ZINE" target="_blank" rel="noopener noreferrer">
+            <div class="work-visual">
+              <span class="work-kicker">Editorial design / typography</span>
+              <h3 class="work-title script">Zine<br>Portal</h3>
+            </div>
+            <div class="work-meta">
+              <span>ZINE</span>
+              <span>Open on Behance ↗</span>
+            </div>
+          </a>
 
-      <div class="work-card reveal">
-        <p>Brand Identity</p>
-        <h2>BRAND<br>IDENTITY</h2>
-        <p>2026</p>
-      </div>
-    </div>
-  </section>
+          <a class="work-card reveal" href="https://www.behance.net/gallery/177304675/POSTERS" target="_blank" rel="noopener noreferrer">
+            <div class="work-visual">
+              <span class="work-kicker">Poster collection</span>
+              <h3 class="work-title">POSTERS</h3>
+            </div>
+            <div class="work-meta">
+              <span>Poster design</span>
+              <span>Open on Behance ↗</span>
+            </div>
+          </a>
 
-  <section id="about">
-    <p class="section-title reveal">02 / ABOUT</p>
+          <a class="work-card reveal" href="https://www.behance.net/gallery/177233105/BRAND-IDENTITY" target="_blank" rel="noopener noreferrer">
+            <div class="work-visual">
+              <span class="work-kicker">La Vela / candle brand</span>
+              <h3 class="work-title">BRAND<br>IDENTITY</h3>
+            </div>
+            <div class="work-meta">
+              <span>Identity system</span>
+              <span>Open on Behance ↗</span>
+            </div>
+          </a>
 
-    <p class="about reveal">
-      I create visual systems, clear messages and expressive communication through typography, rhythm and space.
-    </p>
-  </section>
+          <a class="work-card reveal" href="https://www.behance.net/gallery/176470563/LOGOTYPE" target="_blank" rel="noopener noreferrer">
+            <div class="work-visual">
+              <span class="work-kicker">Logo collection</span>
+              <h3 class="work-title">LOGO<br>TYPE</h3>
+            </div>
+            <div class="work-meta">
+              <span>Logo design</span>
+              <span>Open on Behance ↗</span>
+            </div>
+          </a>
 
-  <section id="contact" class="contact">
-    <p class="section-title reveal">03 / CONTACT</p>
+          <a
+            class="work-card reveal"
+            href="https://www.behance.net/gallery/252671379/TYPOGRAPHY"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="work-visual">
+              <span class="work-kicker">Experimental typography project</span>
+              <h3 class="work-title">TYPE/<br>SPACE</h3>
+            </div>
+            <div class="work-meta">
+              <span>Typography / visual system</span>
+              <span>Open on Behance ↗</span>
+            </div>
+          </a>
 
-    <h2 class="reveal">
-      Let’s<br>
-      create<br>
-      space.
-    </h2>
+          <a class="work-card reveal" href="https://www.behance.net/linadesiart" target="_blank" rel="noopener noreferrer">
+            <div class="work-visual">
+              <span class="work-kicker">Full archive</span>
+              <h3 class="work-title">MORE<br>WORK</h3>
+            </div>
+            <div class="work-meta">
+              <span>ALVO Studio</span>
+              <span>View profile ↗</span>
+            </div>
+          </a>
+        </div>
+      </section>
 
-    <div class="contact-links reveal">
-      <a href="mailto:alisanmaryen@mail.ru">alisanmaryen@mail.ru</a>
-      <a href="https://www.behance.net/linadesiart" target="_blank">Behance ↗</a>
-    </div>
-  </section>
+      <section id="about">
+        <p class="section-label reveal">02 / About</p>
+
+        <div class="about-layout">
+          <p class="about-copy reveal">
+            I create <em>visual systems</em>, clear messages and expressive communication through typography, rhythm and space.
+          </p>
+
+          <aside class="about-card reveal">
+            <h3>What I do</h3>
+            <ul>
+              <li>Brand identity</li>
+              <li>Typography</li>
+              <li>Editorial design</li>
+              <li>Posters</li>
+              <li>Visual communication</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="availability">
+        <h2 class="reveal">Available for freelance</h2>
+      </section>
+
+      <section id="contact" class="contact">
+        <p class="section-label reveal">03 / Contact</p>
+
+        <h2 class="contact-title reveal">
+          Let’s create <span>something cool.</span>
+        </h2>
+
+        <div class="contact-links reveal">
+          <a class="contact-link" href="mailto:alisanmaryen@mail.ru">
+            alisanmaryen@mail.ru
+          </a>
+
+          <a
+            class="contact-link"
+            href="https://www.behance.net/linadesiart"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Behance ↗
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Alina S — Communication Designer</span>
+      <span>Based in Kazakhstan / 2026</span>
+    </footer>
+  </div>
 
   <script>
     const cursor = document.querySelector(".cursor");
+    const interactive = document.querySelectorAll("a, button, .work-card");
 
-    if (window.innerWidth > 768) {
-      window.addEventListener("mousemove", (e) => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
+    if (window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener("mousemove", (event) => {
+        cursor.style.left = event.clientX + "px";
+        cursor.style.top = event.clientY + "px";
       });
 
-      document.querySelectorAll("a, .work-card").forEach((item) => {
-        item.addEventListener("mouseenter", () => cursor.classList.add("active"));
-        item.addEventListener("mouseleave", () => cursor.classList.remove("active"));
+      interactive.forEach((element) => {
+        element.addEventListener("mouseenter", () => cursor.classList.add("is-active"));
+        element.addEventListener("mouseleave", () => cursor.classList.remove("is-active"));
       });
     }
 
-    const revealElements = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
 
-    const revealOnScroll = () => {
-      revealElements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 80) {
-          el.classList.add("visible");
-        }
-      });
-    };
+    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 
-    window.addEventListener("scroll", revealOnScroll);
-    revealOnScroll();
+    const hero = document.querySelector(".hero");
+    const heroTitle = document.querySelector(".hero-title");
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!hero || !heroTitle || window.innerWidth < 721) return;
+
+        const rect = hero.getBoundingClientRect();
+        const progress = Math.min(Math.max(-rect.top / window.innerHeight, 0), 1);
+        heroTitle.style.transform = `translateY(${progress * 58}px)`;
+      },
+      { passive: true }
+    );
   </script>
-
 </body>
 </html>
